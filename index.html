@@ -70,7 +70,7 @@
             align-items: stretch;
             width: 100%;
             padding: 2vh 4vw 0 4vw;
-            gap: 12vw; /* ⭐ 시계와 일정표 사이의 15% 가량의 넓은 여백 */
+            gap: 12vw; /* 시계와 일정표 사이의 15% 가량의 넓은 여백 */
         }
 
         /* 좌측 열: 시험 시간표 (약 42% 너비) */
@@ -79,7 +79,6 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            /* 여백을 주었으므로 구분선(border-right)은 삭제하여 깔끔하게 처리 */
         }
 
         .section-title {
@@ -168,14 +167,14 @@
             font-weight: 900;
         }
 
-        /* 우측 열: 시계 영역 (⭐ 40% 이내인 38%로 설정하여 위압감 감소) */
+        /* 우측 열: 시계 영역 (38%) */
         .clock-section {
             width: 38%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 8vh; /* 위에서 1/3 위치 조정 */
+            padding-top: 4vh; /* ⭐ 기존 8vh에서 4vh로 줄여 시계를 상단으로 올림 */
             position: relative;
         }
 
@@ -194,7 +193,7 @@
         }
 
         .time-display {
-            font-size: 7.5vw; /* ⭐ 컨테이너 축소에 맞춰 시계 크기도 안정감 있게 조절 (약 280px 보장) */
+            font-size: 7.5vw;
             font-weight: 900;
             color: var(--clock-color);
             line-height: 1.1;
@@ -205,11 +204,11 @@
         }
 
         .current-status-message {
-            margin-top: 3vh;
-            font-size: 2.2rem;
+            margin-top: 2vh; /* ⭐ 시계와의 간격 축소 */
+            font-size: 1.8rem; /* ⭐ 글자 크기를 줄여 하단 침범 방지 (기존 2.2rem) */
             font-weight: bold;
             color: #fff;
-            padding: 1.5vh 3vw;
+            padding: 1.2vh 2vw; /* ⭐ 패딩도 약간 줄여 컴팩트하게 조절 */
             border-radius: 1.5vh;
             background-color: rgba(0, 0, 0, 0.5);
             border: 0.2vh solid #475569;
@@ -238,7 +237,7 @@
             padding: 1.5vh 3vw;
             display: flex;
             flex-direction: column;
-            align-items: center; /* ⭐ 유의사항 콘텐츠 중앙 정렬 */
+            align-items: center; /* 유의사항 콘텐츠 중앙 정렬 */
         }
 
         .footer-title {
@@ -259,7 +258,7 @@
         .footer-items {
             display: flex;
             flex-direction: column;
-            align-items: center; /* ⭐ 텍스트들 중앙 정렬 */
+            align-items: center; /* 텍스트들 중앙 정렬 */
             font-size: 1.8rem;
             color: #f8fafc;
             gap: 0.8vh;
@@ -444,8 +443,7 @@
             // 하이라이트 초기화
             document.querySelectorAll('.schedule-item').forEach(el => el.classList.remove('active'));
             let statusMessage = "시험 대기 중 (1교시 준비 08:45 시작)";
-            let statusColor = "#FFFFFF";
-
+            
             if (currentSchedule) {
                 // 남은 시간 계산
                 const remainSecTotal = currentSchedule.end - currentSeconds;
@@ -472,7 +470,8 @@
                 }
             } else {
                 if (currentSeconds >= schedules[schedules.length - 1].end) {
-                    statusMessage = "오늘의 모든 시험 일정이 종료되었습니다.";
+                    // ⭐ 문구를 간결하게 수정
+                    statusMessage = "오늘의 모든 시험이 종료되었습니다.";
                 }
                 previousStatus = null;
             }
