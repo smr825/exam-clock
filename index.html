@@ -62,21 +62,24 @@
             text-shadow: 0.3rem 0.3rem 0.5rem rgba(0,0,0,0.6);
         }
 
-        /* 2. 중앙 영역 (메인 콘텐츠) - 55vh 고정 (유의사항을 위로 당기기 위해 50%보다 약간 늘림) */
+        /* 2. 중앙 영역 (메인 콘텐츠) - 55vh 고정 */
         main {
             height: 55vh;
             display: flex;
+            justify-content: center; /* 양쪽 컨텐츠를 중앙으로 모음 */
+            align-items: stretch;
             width: 100%;
+            padding: 2vh 4vw 0 4vw;
+            gap: 12vw; /* ⭐ 시계와 일정표 사이의 15% 가량의 넓은 여백 */
         }
 
-        /* 좌측 열: 시험 시간표 (40% 너비) */
+        /* 좌측 열: 시험 시간표 (약 42% 너비) */
         .schedule-section {
-            width: 40%;
+            width: 42%;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 상단 밀착 */
-            padding: 2vh 2vw 0 2vw; /* 마진/패딩 최소화 */
-            border-right: 0.2vh solid var(--border-color);
+            justify-content: flex-start;
+            /* 여백을 주었으므로 구분선(border-right)은 삭제하여 깔끔하게 처리 */
         }
 
         .section-title {
@@ -93,14 +96,14 @@
         .schedule-list {
             display: flex;
             flex-direction: column;
-            gap: 1vh; /* 항목 간 간격 최소화 */
+            gap: 1.2vh; /* 항목 간 간격 */
         }
 
         .schedule-item {
             display: grid;
             grid-template-columns: 1fr 3fr;
             background-color: rgba(255, 255, 255, 0.05);
-            padding: 1.2vh 1.5vw; /* 패딩을 줄여 컴팩트하게 */
+            padding: 1.2vh 1.5vw;
             border-radius: 1vh;
             border-left: 0.5vh solid #475569;
             transition: all 0.3s ease;
@@ -165,9 +168,9 @@
             font-weight: 900;
         }
 
-        /* 우측 열: 시계 영역 (60% 너비) */
+        /* 우측 열: 시계 영역 (⭐ 40% 이내인 38%로 설정하여 위압감 감소) */
         .clock-section {
-            width: 60%;
+            width: 38%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -177,26 +180,26 @@
         }
 
         .timezone-label {
-            font-size: 2.2rem; /* 40px 이상 */
+            font-size: 2.2rem;
             color: #60a5fa;
             margin-bottom: 1vh;
             letter-spacing: 0.2rem;
         }
 
         .date-display {
-            font-size: 3rem; /* 50px 이상 */
+            font-size: 3rem;
             font-weight: 700;
             color: #e2e8f0;
             margin-bottom: 1vh;
         }
 
         .time-display {
-            font-size: 13vw; /* 화면 너비의 13% = 초대형 폰트 (150px 이상 가뿐히 보장) */
+            font-size: 7.5vw; /* ⭐ 컨테이너 축소에 맞춰 시계 크기도 안정감 있게 조절 (약 280px 보장) */
             font-weight: 900;
             color: var(--clock-color);
-            line-height: 1;
+            line-height: 1.1;
             font-family: 'Courier New', Courier, monospace;
-            letter-spacing: -0.5rem;
+            letter-spacing: -0.2rem;
             text-shadow: 0 0 2vh rgba(0, 255, 234, 0.4);
             font-variant-numeric: tabular-nums;
         }
@@ -212,6 +215,7 @@
             border: 0.2vh solid #475569;
             text-align: center;
             line-height: 1.4;
+            width: 100%;
         }
 
         /* 3. 하단 영역 (유의사항) - 25vh 고정 */
@@ -221,27 +225,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* 상단 여백 축소하여 위로 많이 끌어올림 */
-            padding-top: 2vh; /* 패딩 20px 이하 체감 */
+            justify-content: flex-start;
+            padding-top: 2vh;
             border-top: 0.4vh solid #ef4444;
         }
 
         .footer-content {
-            width: 85%;
+            width: 80%;
             background-color: rgba(0, 0, 0, 0.4);
             border: 0.2vh solid #ef4444;
             border-radius: 1vh;
             padding: 1.5vh 3vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* ⭐ 유의사항 콘텐츠 중앙 정렬 */
         }
 
         .footer-title {
             font-size: 2rem;
             font-weight: 900;
             color: #fca5a5;
-            margin-bottom: 0.5vh;
-            text-align: left;
+            margin-bottom: 1vh;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
         .footer-title::before {
@@ -252,22 +259,20 @@
         .footer-items {
             display: flex;
             flex-direction: column;
-            font-size: 1.8rem; /* 약 28px 체감 */
+            align-items: center; /* ⭐ 텍스트들 중앙 정렬 */
+            font-size: 1.8rem;
             color: #f8fafc;
-            text-align: left;
-            padding-left: 2vw;
-            gap: 0.5vh;
+            gap: 0.8vh;
         }
 
         .footer-item {
-            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
         }
 
         .footer-item::before {
             content: '🚫';
-            position: absolute;
-            left: -1.8vw;
-            top: 0.2vh;
             font-size: 1.5rem;
         }
 
