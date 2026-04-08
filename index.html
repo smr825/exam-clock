@@ -3,51 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전주여자상업고등학교 시험 시계</title>
+    <title>전주여자상업고등학교 1학기 1차 시험 시계</title>
     <style>
-        /* 기본 리셋 및 폰트 설정 (가독성을 위한 굵은 고딕 계열) */
+        /* 폰트 설정: 가독성이 좋은 Noto Sans KR 사용 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #0F172A;       /* 매우 어두운 네이비 */
+            --header-bg: #1E293B;      /* 헤더 배경 */
+            --text-main: #FFFFFF;      /* 메인 텍스트 */
+            --text-accent: #FFD700;    /* 강조 텍스트 (금색) */
+            --highlight-bg: #EAB308;   /* 현재 교시 강조 배경 (진한 노랑) */
+            --highlight-text: #000000; /* 강조 시 텍스트 색상 */
+            --border-color: #334155;
+            --clock-color: #00FFEA;    /* 시계 숫자 색상 (형광 시안) */
+        }
+
+        /* 86인치 4K 해상도 대응을 위한 기본 폰트 사이즈 설정 */
+        html {
+            font-size: 1vw; /* 화면 너비의 1%를 기본 1rem으로 설정 (반응형) */
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Pretendard', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             font-weight: 700;
         }
 
         body {
-            background-color: #0f172a; /* 눈이 편안한 짙은 네이비/블랙 배경 */
-            color: #f8fafc;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             height: 100vh;
-            overflow: hidden;
+            width: 100vw;
+            overflow: hidden; /* 스크롤 완전 차단 */
             display: flex;
             flex-direction: column;
         }
 
-        /* 1. 상단 헤더 영역 (20% 높이) */
-        .header {
-            flex: 0 0 20vh;
-            background-color: #1e3a8a;
+        /* 1. 상단 영역 (헤더) - 20vh 고정 */
+        header {
+            height: 20vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 5px solid #3b82f6;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background-color: var(--header-bg);
+            border-bottom: 0.4vh solid var(--text-accent);
+            box-shadow: 0 1vh 2vh rgba(0,0,0,0.5);
             z-index: 10;
         }
-        .header h1 {
-            font-size: clamp(60px, 6vw, 90px); /* 최소 60px 이상 */
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+
+        h1 {
+            font-size: 4.5rem; /* 매우 큰 폰트 (최소 60px 이상 보장) */
+            font-weight: 900;
+            letter-spacing: -0.1rem;
+            color: var(--text-main);
+            text-shadow: 0.3rem 0.3rem 0.5rem rgba(0,0,0,0.6);
         }
 
-        /* 2. 중앙 컨텐츠 영역 (50% 높이, 60:40 레이아웃) */
-        .main-container {
-            flex: 0 0 55vh; /* 일정과 유의사항을 위로 당기기 위해 높이를 약간 늘림 */
+        /* 2. 중앙 영역 (메인 콘텐츠) - 55vh 고정 (유의사항을 위로 당기기 위해 50%보다 약간 늘림) */
+        main {
+            height: 55vh;
             display: flex;
             width: 100%;
         }
 
-        /* 좌측 열 - 시계 (60% 너비, 화면 위에서 1/3 지점에 오도록 정렬) */
+        /* 좌측 열: 시험 시간표 (40% 너비) */
+        .schedule-section {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 상단 밀착 */
+            padding: 2vh 2vw 0 2vw; /* 마진/패딩 최소화 */
+            border-right: 0.2vh solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #34d399;
+            margin-bottom: 1.5vh;
+            text-align: center;
+            border-bottom: 0.3vh solid #059669;
+            padding-bottom: 1vh;
+            flex-shrink: 0;
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1vh; /* 항목 간 간격 최소화 */
+        }
+
+        .schedule-item {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.2vh 1.5vw; /* 패딩을 줄여 컴팩트하게 */
+            border-radius: 1vh;
+            border-left: 0.5vh solid #475569;
+            transition: all 0.3s ease;
+        }
+
+        .period-name {
+            font-size: 2rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+        }
+
+        .period-times {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 1.5vw;
+        }
+
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.3vh;
+        }
+        
+        .time-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            font-size: 1.4rem;
+            color: #cbd5e1;
+            margin-right: 1vw;
+        }
+
+        .time {
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+
+        .exam-time {
+            font-size: 2.4rem; /* 본 령 / 자율학습 시간 눈에 띄게 더 크게 */
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        /* 현재 진행중인 교시 강조 스타일 */
+        .schedule-item.active {
+            background-color: var(--highlight-bg);
+            border-left: 0.6vh solid #FFFFFF;
+            transform: scale(1.02);
+            box-shadow: 0 0.5vh 1.5vh rgba(234, 179, 8, 0.4);
+        }
+        
+        .schedule-item.active .period-name,
+        .schedule-item.active .label,
+        .schedule-item.active .time {
+            color: var(--highlight-text);
+            font-weight: 900;
+        }
+
+        /* 우측 열: 시계 영역 (60% 너비) */
         .clock-section {
             width: 60%;
             display: flex;
@@ -55,222 +173,196 @@
             justify-content: flex-start;
             align-items: center;
             padding-top: 8vh; /* 위에서 1/3 위치 조정 */
-            border-right: 2px solid #334155;
-        }
-        .kst-label {
-            font-size: clamp(40px, 3vw, 50px);
-            color: #60a5fa;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-        }
-        .date-display {
-            font-size: clamp(55px, 4vw, 65px);
-            color: #cbd5e1;
-            margin-bottom: 15px;
-        }
-        .time-display {
-            font-size: clamp(160px, 13vw, 220px); /* 150px 이상 초대형 폰트 */
-            font-weight: 900;
-            color: #ffffff;
-            line-height: 1;
-            text-shadow: 0 0 30px rgba(255,255,255,0.4);
-            font-variant-numeric: tabular-nums; /* 숫자 너비 고정으로 깜빡임 방지 */
-        }
-        .status-display {
-            margin-top: 25px;
-            font-size: 45px;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 15px 40px;
-            border-radius: 20px;
-            border: 2px solid #475569;
-            text-align: center;
-            line-height: 1.3;
-        }
-        .highlight-time {
-            color: #fbbf24;
-            font-weight: 900;
+            position: relative;
         }
 
-        /* 우측 열 - 일정표 (40% 너비, 패딩/마진 최소화하여 위로 밀착) */
-        .schedule-section {
-            width: 40%;
+        .timezone-label {
+            font-size: 2.2rem; /* 40px 이상 */
+            color: #60a5fa;
+            margin-bottom: 1vh;
+            letter-spacing: 0.2rem;
+        }
+
+        .date-display {
+            font-size: 3rem; /* 50px 이상 */
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 1vh;
+        }
+
+        .time-display {
+            font-size: 13vw; /* 화면 너비의 13% = 초대형 폰트 (150px 이상 가뿐히 보장) */
+            font-weight: 900;
+            color: var(--clock-color);
+            line-height: 1;
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: -0.5rem;
+            text-shadow: 0 0 2vh rgba(0, 255, 234, 0.4);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .current-status-message {
+            margin-top: 3vh;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #fff;
+            padding: 1.5vh 3vw;
+            border-radius: 1.5vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 0.2vh solid #475569;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* 3. 하단 영역 (유의사항) - 25vh 고정 */
+        footer {
+            height: 25vh;
+            background-color: rgba(220, 38, 38, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 상단 밀착 */
-            padding: 2vh 40px 0 40px;
-        }
-        .schedule-title {
-            font-size: 40px;
-            color: #34d399;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 3px solid #059669;
-            text-align: center;
-        }
-        .schedule-item {
-            background-color: #1e293b;
-            margin-bottom: 6px; /* 마진 최소화 */
-            padding: 8px 15px; /* 패딩 최소화 */
-            border-radius: 8px;
-            border-left: 6px solid #475569;
-            transition: all 0.3s ease;
-        }
-        .schedule-item.active {
-            background-color: #334155;
-            border-left-color: #fbbf24;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
-            transform: scale(1.02);
-        }
-        .schedule-period {
-            font-size: 30px;
-            color: #94a3b8;
-            margin-bottom: 2px;
-        }
-        .schedule-detail {
-            font-size: 32px;
-            display: flex;
-            justify-content: space-between;
-            margin: 2px 0;
-        }
-        .eval-highlight {
-            color: #fbbf24;
-            font-size: 38px; /* 평가 시간 크게 */
-            font-weight: 900;
+            align-items: center;
+            justify-content: flex-start; /* 상단 여백 축소하여 위로 많이 끌어올림 */
+            padding-top: 2vh; /* 패딩 20px 이하 체감 */
+            border-top: 0.4vh solid #ef4444;
         }
 
-        /* 3. 하단 영역 - 유의사항 (25% 높이, 중앙 영역 바로 아래 밀착) */
-        .notice-section {
-            flex: 0 0 25vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* 상단 밀착 */
-            padding-top: 10px; /* 여백 대폭 축소 */
-        }
-        .notice-box {
+        .footer-content {
             width: 85%;
-            background-color: rgba(220, 38, 38, 0.15);
-            border: 3px solid #ef4444;
-            border-radius: 12px;
-            padding: 15px 30px; /* 패딩 축소 */
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 0.2vh solid #ef4444;
+            border-radius: 1vh;
+            padding: 1.5vh 3vw;
         }
-        .notice-title {
-            font-size: 32px;
+
+        .footer-title {
+            font-size: 2rem;
+            font-weight: 900;
             color: #fca5a5;
-            margin-bottom: 8px;
+            margin-bottom: 0.5vh;
             text-align: left;
             display: flex;
             align-items: center;
-            gap: 10px;
         }
-        .notice-list {
-            list-style: none;
-            text-align: left;
+
+        .footer-title::before {
+            content: '⚠️ ';
+            margin-right: 0.5vw;
         }
-        .notice-list li {
-            font-size: 28px;
+
+        .footer-items {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.8rem; /* 약 28px 체감 */
             color: #f8fafc;
-            margin-bottom: 4px;
-            padding-left: 30px;
+            text-align: left;
+            padding-left: 2vw;
+            gap: 0.5vh;
+        }
+
+        .footer-item {
             position: relative;
         }
-        .notice-list li::before {
+
+        .footer-item::before {
             content: '🚫';
             position: absolute;
-            left: 0;
-            top: 2px;
-            font-size: 24px;
+            left: -1.8vw;
+            top: 0.2vh;
+            font-size: 1.5rem;
         }
-        
-        /* 알림음 활성화를 위한 안내문 */
+
+        /* 알림음 활성화 안내 오버레이 */
         #audio-init-overlay {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 18px;
+            bottom: 2vh;
+            right: 2vw;
+            background: rgba(0,0,0,0.8);
+            padding: 1vh 2vw;
+            border-radius: 1vh;
+            font-size: 1.2rem;
             color: #aaa;
             cursor: pointer;
             z-index: 1000;
+            border: 0.1vh solid #555;
         }
+
     </style>
 </head>
 <body>
 
     <div id="audio-init-overlay" onclick="initAudio()">🔊 알림음을 켜려면 화면을 한 번 클릭하세요</div>
 
-    <div class="header">
+    <header>
         <h1>전주여자상업고등학교 1학기 1차 시험</h1>
-    </div>
+    </header>
 
-    <div class="main-container">
-        
-        <div class="clock-section">
-            <div class="kst-label">한국표준시</div>
-            <div class="date-display" id="date">YYYY년 MM월 DD일 요일</div>
-            <div class="time-display" id="time">00:00:00</div>
-            
-            <div class="status-display" id="status-box">
-                <span id="current-period-name">시험 대기 중</span><br>
-                <span id="remaining-time" class="highlight-time">--:--</span>
+    <main>
+        <section class="schedule-section">
+            <div class="section-title">시험 시간</div>
+            <div class="schedule-list">
+                <div class="schedule-item" id="period-1">
+                    <div class="period-name">1교시</div>
+                    <div class="period-times">
+                        <div class="time-row">
+                            <span class="label">준&nbsp;&nbsp;비</span>
+                            <span class="time">08:45 ~ 08:50</span>
+                        </div>
+                        <div class="time-row">
+                            <span class="label">본&nbsp;&nbsp;령</span>
+                            <span class="time exam-time">08:50 ~ 09:40</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schedule-item" id="period-2">
+                    <div class="period-name">2교시</div>
+                    <div class="period-times">
+                        <div class="time-row">
+                            <span class="label">자율학습</span>
+                            <span class="time exam-time">09:55 ~ 10:50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schedule-item" id="period-3">
+                    <div class="period-name">3교시</div>
+                    <div class="period-times">
+                        <div class="time-row">
+                            <span class="label">준&nbsp;&nbsp;비</span>
+                            <span class="time">11:05 ~ 11:10</span>
+                        </div>
+                        <div class="time-row">
+                            <span class="label">본&nbsp;&nbsp;령</span>
+                            <span class="time exam-time">11:10 ~ 12:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="clock-section">
+            <div class="timezone-label">한국표준시</div>
+            <div class="date-display" id="date-display">YYYY년 MM월 DD일 요일</div>
+            <div class="time-display" id="time-display">00:00:00</div>
+            <div class="current-status-message" id="status-message">시험 대기 중</div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-title">시험 중 유의사항</div>
+            <div class="footer-items">
+                <div class="footer-item">전자기기 소지 금지 (부정행위로 간주됨)</div>
+                <div class="footer-item">부정행위 적발 시 0점 처리</div>
             </div>
         </div>
-
-        <div class="schedule-section">
-            <div class="schedule-title">오늘의 시험 일정</div>
-            
-            <div class="schedule-item" id="p1">
-                <div class="schedule-period">1교시</div>
-                <div class="schedule-detail"><span>준 비</span><span>08:45 ~ 08:50</span></div>
-                <div class="schedule-detail eval-highlight"><span>평 가</span><span>08:50 ~ 09:40</span></div>
-            </div>
-            
-            <div class="schedule-item" id="p2">
-                <div class="schedule-period">2교시</div>
-                <div class="schedule-detail eval-highlight"><span>자율학습</span><span>09:55 ~ 10:50</span></div>
-            </div>
-            
-            <div class="schedule-item" id="p3">
-                <div class="schedule-period">3교시</div>
-                <div class="schedule-detail"><span>준 비</span><span>11:05 ~ 11:10</span></div>
-                <div class="schedule-detail eval-highlight"><span>평 가</span><span>11:10 ~ 12:00</span></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="notice-section">
-        <div class="notice-box">
-            <div class="notice-title">⚠️ 시험 중 유의사항</div>
-            <ul class="notice-list">
-                <li>전자기기 소지 금지 (소지 시 부정행위로 간주됨)</li>
-                <li>부정행위 적발 시 해당 과목 0점 처리</li>
-            </ul>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        // 시간 데이터를 초 단위로 변환하는 함수 (비교용)
-        function timeToSeconds(timeStr) {
-            const [h, m] = timeStr.split(':');
-            return parseInt(h) * 3600 + parseInt(m) * 60;
-        }
-
-        // 시험 일정 데이터 정의
-        const scheduleData = [
-            { id: "p1", name: "1교시 준비", start: timeToSeconds("08:45"), end: timeToSeconds("08:50"), isEval: false },
-            { id: "p1", name: "1교시 평가", start: timeToSeconds("08:50"), end: timeToSeconds("09:40"), isEval: true },
-            { id: null, name: "쉬는 시간", start: timeToSeconds("09:40"), end: timeToSeconds("09:55"), isEval: false },
-            { id: "p2", name: "2교시 자율학습", start: timeToSeconds("09:55"), end: timeToSeconds("10:50"), isEval: true },
-            { id: null, name: "쉬는 시간", start: timeToSeconds("10:50"), end: timeToSeconds("11:05"), isEval: false },
-            { id: "p3", name: "3교시 준비", start: timeToSeconds("11:05"), end: timeToSeconds("11:10"), isEval: false },
-            { id: "p3", name: "3교시 평가", start: timeToSeconds("11:10"), end: timeToSeconds("12:00"), isEval: true }
-        ];
-
         let audioCtx = null;
-        let previousStateName = null;
+        let previousStatus = null;
 
-        // 웹 오디오 API를 이용한 알림음 생성 (외부 파일 불필요)
+        // 웹 오디오 API 알림음 초기화
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -278,6 +370,7 @@
             }
         }
 
+        // 알림음 재생 함수
         function playBeep() {
             if (!audioCtx) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -286,7 +379,7 @@
             const gain = audioCtx.createGain();
             
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // 880Hz (A5음)
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5음
             
             gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
@@ -298,72 +391,94 @@
             osc.stop(audioCtx.currentTime + 1.5);
         }
 
-        // 시계 및 일정 업데이트 메인 함수
+        // 시간 데이터를 초로 변환
+        function timeToSec(timeStr) {
+            const [h, m] = timeStr.split(':').map(Number);
+            return h * 3600 + m * 60;
+        }
+
+        // 시험 일정 세부 데이터 (초 단위 변환)
+        const schedules = [
+            { id: 'period-1', name: '1교시 준비', type: 'prep', start: timeToSec('08:45'), end: timeToSec('08:50') },
+            { id: 'period-1', name: '1교시 본령', type: 'exam', start: timeToSec('08:50'), end: timeToSec('09:40') },
+            { id: null, name: '쉬는 시간', type: 'break', start: timeToSec('09:40'), end: timeToSec('09:55') },
+            { id: 'period-2', name: '2교시 자율학습', type: 'exam', start: timeToSec('09:55'), end: timeToSec('10:50') },
+            { id: null, name: '쉬는 시간', type: 'break', start: timeToSec('10:50'), end: timeToSec('11:05') },
+            { id: 'period-3', name: '3교시 준비', type: 'prep', start: timeToSec('11:05'), end: timeToSec('11:10') },
+            { id: 'period-3', name: '3교시 본령', type: 'exam', start: timeToSec('11:10'), end: timeToSec('12:00') }
+        ];
+
         function updateClock() {
             const now = new Date();
+
+            // 1. 날짜 업데이트
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+            const weekDay = weekDays[now.getDay()];
+            document.getElementById('date-display').innerText = `${year}년 ${month}월 ${day}일 ${weekDay}요일`;
+
+            // 2. 시간 업데이트
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            // 시계 텍스트 업데이트
-            document.getElementById('time').innerText = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('time-display').innerText = `${hours}:${minutes}:${seconds}`;
 
-            // 날짜 업데이트
-            const days = ['일', '월', '화', '수', '목', '금', '토'];
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const date = String(now.getDate()).padStart(2, '0');
-            const day = days[now.getDay()];
-            document.getElementById('date').innerText = `${year}년 ${month}월 ${date}일 ${day}요일`;
-
-            // 현재 상태 계산
+            // 3. 상태 계산
             const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-            let currentState = null;
+            let currentSchedule = null;
 
-            for (let i = 0; i < scheduleData.length; i++) {
-                if (currentSeconds >= scheduleData[i].start && currentSeconds < scheduleData[i].end) {
-                    currentState = scheduleData[i];
+            for (let s of schedules) {
+                if (currentSeconds >= s.start && currentSeconds < s.end) {
+                    currentSchedule = s;
                     break;
                 }
             }
 
-            // 모든 하이라이트 초기화
+            // 하이라이트 초기화
             document.querySelectorAll('.schedule-item').forEach(el => el.classList.remove('active'));
+            let statusMessage = "시험 대기 중 (1교시 준비 08:45 시작)";
+            let statusColor = "#FFFFFF";
 
-            if (currentState) {
-                // 현재 진행중인 교시 배경 하이라이트
-                if (currentState.id) {
-                    document.getElementById(currentState.id).classList.add('active');
+            if (currentSchedule) {
+                // 남은 시간 계산
+                const remainSecTotal = currentSchedule.end - currentSeconds;
+                const rMin = Math.floor(remainSecTotal / 60);
+                const rSec = remainSecTotal % 60;
+                const remainText = `${String(rMin).padStart(2, '0')}분 ${String(rSec).padStart(2, '0')}초`;
+
+                if (currentSchedule.id) {
+                    document.getElementById(currentSchedule.id).classList.add('active');
                 }
 
-                // 남은 시간 계산 (분:초)
-                const remainSec = currentState.end - currentSeconds;
-                const rMin = String(Math.floor(remainSec / 60)).padStart(2, '0');
-                const rSec = String(remainSec % 60).padStart(2, '0');
+                if (currentSchedule.type === 'prep') {
+                    statusMessage = `<span style="color:#FFD700">${currentSchedule.name} 중</span><br>본령 시작까지 남은 시간: ${remainText}`;
+                } else if (currentSchedule.type === 'exam') {
+                    statusMessage = `<span style="color:#00FFEA">${currentSchedule.name} 진행 중</span><br>종료까지 남은 시간: <span style="color:#ef4444">${remainText}</span>`;
+                } else if (currentSchedule.type === 'break') {
+                    statusMessage = `<span style="color:#94a3b8">${currentSchedule.name}</span><br>다음 시간까지: ${remainText}`;
+                }
 
-                document.getElementById('current-period-name').innerText = `${currentState.name} 진행 중`;
-                document.getElementById('remaining-time').innerText = `남은 시간 ${rMin}:${rSec}`;
-                document.getElementById('remaining-time').style.color = currentState.isEval ? '#ef4444' : '#fbbf24';
-
-                // 교시가 바뀌었을 때 알림음 재생
-                if (previousStateName !== currentState.name) {
-                    if (previousStateName !== null) playBeep();
-                    previousStateName = currentState.name;
+                // 상태 변경 시 알림음 재생
+                if (previousStatus !== currentSchedule.name) {
+                    if (previousStatus !== null) playBeep();
+                    previousStatus = currentSchedule.name;
                 }
             } else {
-                if (currentSeconds < scheduleData[0].start) {
-                    document.getElementById('current-period-name').innerText = "시험 대기 중";
-                } else {
-                    document.getElementById('current-period-name').innerText = "모든 일정 종료";
+                if (currentSeconds >= schedules[schedules.length - 1].end) {
+                    statusMessage = "오늘의 모든 시험 일정이 종료되었습니다.";
                 }
-                document.getElementById('remaining-time').innerText = "--:--";
-                previousStateName = null;
+                previousStatus = null;
             }
+
+            document.getElementById('status-message').innerHTML = statusMessage;
         }
 
-        // 1초마다 업데이트 실행
+        // 1초마다 시계 업데이트
         setInterval(updateClock, 1000);
-        updateClock(); // 초기 즉시 실행
+        updateClock(); // 로딩 즉시 실행
+
     </script>
 </body>
 </html>
