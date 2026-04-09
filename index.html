@@ -147,7 +147,7 @@
         }
 
         .exam-time {
-            font-size: 2.4rem; /* 본 령 / 자율학습 시간 눈에 띄게 더 크게 */
+            font-size: 2.4rem; /* 시험 / 자율학습 시간 눈에 띄게 더 크게 */
             font-weight: 900;
             color: var(--text-main);
         }
@@ -174,7 +174,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 4vh; /* ⭐ 기존 8vh에서 4vh로 줄여 시계를 상단으로 올림 */
+            padding-top: 4vh; /* 시계 위치 상향 */
             position: relative;
         }
 
@@ -204,11 +204,11 @@
         }
 
         .current-status-message {
-            margin-top: 2vh; /* ⭐ 시계와의 간격 축소 */
-            font-size: 1.8rem; /* ⭐ 글자 크기를 줄여 하단 침범 방지 (기존 2.2rem) */
+            margin-top: 2vh; 
+            font-size: 1.8rem; /* 크기를 약간 줄여 안정감 확보 */
             font-weight: bold;
             color: #fff;
-            padding: 1.2vh 2vw; /* ⭐ 패딩도 약간 줄여 컴팩트하게 조절 */
+            padding: 1.2vh 2vw;
             border-radius: 1.5vh;
             background-color: rgba(0, 0, 0, 0.5);
             border: 0.2vh solid #475569;
@@ -312,7 +312,7 @@
                             <span class="time">08:45 ~ 08:50</span>
                         </div>
                         <div class="time-row">
-                            <span class="label">본&nbsp;&nbsp;령</span>
+                            <span class="label">시&nbsp;&nbsp;험</span>
                             <span class="time exam-time">08:50 ~ 09:40</span>
                         </div>
                     </div>
@@ -336,7 +336,7 @@
                             <span class="time">11:05 ~ 11:10</span>
                         </div>
                         <div class="time-row">
-                            <span class="label">본&nbsp;&nbsp;령</span>
+                            <span class="label">시&nbsp;&nbsp;험</span>
                             <span class="time exam-time">11:10 ~ 12:00</span>
                         </div>
                     </div>
@@ -374,7 +374,6 @@
             }
         }
 
-        // 알림음 재생 함수
         function playBeep() {
             if (!audioCtx) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -395,27 +394,26 @@
             osc.stop(audioCtx.currentTime + 1.5);
         }
 
-        // 시간 데이터를 초로 변환
         function timeToSec(timeStr) {
             const [h, m] = timeStr.split(':').map(Number);
             return h * 3600 + m * 60;
         }
 
-        // 시험 일정 세부 데이터 (초 단위 변환)
+        // ⭐ 자바스크립트 데이터에서도 '본령'을 모두 '시험'으로 일괄 변경
         const schedules = [
-            { id: 'period-1', name: '1교시 준비', type: 'prep', start: timeToSec('08:45'), end: timeToSec('08:50') },
-            { id: 'period-1', name: '1교시 본령', type: 'exam', start: timeToSec('08:50'), end: timeToSec('09:40') },
-            { id: null, name: '쉬는 시간', type: 'break', start: timeToSec('09:40'), end: timeToSec('09:55') },
+            { id: 'period-1', name: '1교시 준비', type: 'prep', nextName: '1교시 시험', start: timeToSec('08:45'), end: timeToSec('08:50') },
+            { id: 'period-1', name: '1교시 시험', type: 'exam', start: timeToSec('08:50'), end: timeToSec('09:40') },
+            { id: null, name: '쉬는 시간', type: 'break', nextName: '2교시 자율학습', start: timeToSec('09:40'), end: timeToSec('09:55') },
             { id: 'period-2', name: '2교시 자율학습', type: 'exam', start: timeToSec('09:55'), end: timeToSec('10:50') },
-            { id: null, name: '쉬는 시간', type: 'break', start: timeToSec('10:50'), end: timeToSec('11:05') },
-            { id: 'period-3', name: '3교시 준비', type: 'prep', start: timeToSec('11:05'), end: timeToSec('11:10') },
-            { id: 'period-3', name: '3교시 본령', type: 'exam', start: timeToSec('11:10'), end: timeToSec('12:00') }
+            { id: null, name: '쉬는 시간', type: 'break', nextName: '3교시 준비', start: timeToSec('10:50'), end: timeToSec('11:05') },
+            { id: 'period-3', name: '3교시 준비', type: 'prep', nextName: '3교시 시험', start: timeToSec('11:05'), end: timeToSec('11:10') },
+            { id: 'period-3', name: '3교시 시험', type: 'exam', start: timeToSec('11:10'), end: timeToSec('12:00') }
         ];
 
         function updateClock() {
             const now = new Date();
 
-            // 1. 날짜 업데이트
+            // 1. 날짜 및 시간 업데이트
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
@@ -423,13 +421,12 @@
             const weekDay = weekDays[now.getDay()];
             document.getElementById('date-display').innerText = `${year}년 ${month}월 ${day}일 ${weekDay}요일`;
 
-            // 2. 시간 업데이트
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('time-display').innerText = `${hours}:${minutes}:${seconds}`;
 
-            // 3. 상태 계산
+            // 2. 상태 계산 로직
             const currentSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
             let currentSchedule = null;
 
@@ -442,25 +439,25 @@
 
             // 하이라이트 초기화
             document.querySelectorAll('.schedule-item').forEach(el => el.classList.remove('active'));
-            let statusMessage = "시험 대기 중 (1교시 준비 08:45 시작)";
+            let statusMessage = "시험 대기 중<br>(1교시 준비 08:45 시작)";
             
             if (currentSchedule) {
-                // 남은 시간 계산
+                // 남은 시간을 두 자리로 맞춤 (예: 09분 05초)
                 const remainSecTotal = currentSchedule.end - currentSeconds;
-                const rMin = Math.floor(remainSecTotal / 60);
-                const rSec = remainSecTotal % 60;
-                const remainText = `${String(rMin).padStart(2, '0')}분 ${String(rSec).padStart(2, '0')}초`;
+                const rMin = String(Math.floor(remainSecTotal / 60)).padStart(2, '0');
+                const rSec = String(remainSecTotal % 60).padStart(2, '0');
+                const remainText = `${rMin}분 ${rSec}초`;
 
                 if (currentSchedule.id) {
                     document.getElementById(currentSchedule.id).classList.add('active');
                 }
 
                 if (currentSchedule.type === 'prep') {
-                    statusMessage = `<span style="color:#FFD700">${currentSchedule.name} 중</span><br>본령 시작까지 남은 시간: ${remainText}`;
+                    statusMessage = `<span style="color:#FFD700">${currentSchedule.name} 중</span><br>${currentSchedule.nextName} 시작까지 남은 시간: ${remainText}`;
                 } else if (currentSchedule.type === 'exam') {
                     statusMessage = `<span style="color:#00FFEA">${currentSchedule.name} 진행 중</span><br>종료까지 남은 시간: <span style="color:#ef4444">${remainText}</span>`;
                 } else if (currentSchedule.type === 'break') {
-                    statusMessage = `<span style="color:#94a3b8">${currentSchedule.name}</span><br>다음 시간까지: ${remainText}`;
+                    statusMessage = `<span style="color:#94a3b8">쉬는 시간</span><br>${currentSchedule.nextName} 시작까지 남은 시간: ${remainText}`;
                 }
 
                 // 상태 변경 시 알림음 재생
@@ -470,7 +467,6 @@
                 }
             } else {
                 if (currentSeconds >= schedules[schedules.length - 1].end) {
-                    // ⭐ 문구를 간결하게 수정
                     statusMessage = "오늘의 모든 시험이 종료되었습니다.";
                 }
                 previousStatus = null;
@@ -479,9 +475,8 @@
             document.getElementById('status-message').innerHTML = statusMessage;
         }
 
-        // 1초마다 시계 업데이트
         setInterval(updateClock, 1000);
-        updateClock(); // 로딩 즉시 실행
+        updateClock();
 
     </script>
 </body>
