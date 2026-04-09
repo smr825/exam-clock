@@ -174,14 +174,14 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 4vh; /* 시계 위치 상향 */
+            padding-top: 1vh; /* ⭐ 시계 상단 위치를 더 위로 끌어올림 (기존 4vh -> 1vh) */
             position: relative;
         }
 
         .timezone-label {
             font-size: 2.2rem;
             color: #60a5fa;
-            margin-bottom: 1vh;
+            margin-bottom: 0.5vh; /* ⭐ 요소 간 간격 압축 */
             letter-spacing: 0.2rem;
         }
 
@@ -189,14 +189,14 @@
             font-size: 3rem;
             font-weight: 700;
             color: #e2e8f0;
-            margin-bottom: 1vh;
+            margin-bottom: 0.5vh; /* ⭐ 요소 간 간격 압축 */
         }
 
         .time-display {
             font-size: 7.5vw;
             font-weight: 900;
             color: var(--clock-color);
-            line-height: 1.1;
+            line-height: 1; /* ⭐ 라인 하이트를 1로 줄여서 불필요한 상하 여백 제거 */
             font-family: 'Courier New', Courier, monospace;
             letter-spacing: -0.2rem;
             text-shadow: 0 0 2vh rgba(0, 255, 234, 0.4);
@@ -204,11 +204,11 @@
         }
 
         .current-status-message {
-            margin-top: 2vh; 
-            font-size: 1.8rem; /* 크기를 약간 줄여 안정감 확보 */
+            margin-top: 1.5vh; /* ⭐ 상태 메시지 위쪽 여백 축소 */
+            font-size: 1.8rem;
             font-weight: bold;
             color: #fff;
-            padding: 1.2vh 2vw;
+            padding: 1vh 2vw; /* ⭐ 패딩도 밀도 있게 축소 */
             border-radius: 1.5vh;
             background-color: rgba(0, 0, 0, 0.5);
             border: 0.2vh solid #475569;
@@ -399,7 +399,6 @@
             return h * 3600 + m * 60;
         }
 
-        // ⭐ 자바스크립트 데이터에서도 '본령'을 모두 '시험'으로 일괄 변경
         const schedules = [
             { id: 'period-1', name: '1교시 준비', type: 'prep', nextName: '1교시 시험', start: timeToSec('08:45'), end: timeToSec('08:50') },
             { id: 'period-1', name: '1교시 시험', type: 'exam', start: timeToSec('08:50'), end: timeToSec('09:40') },
